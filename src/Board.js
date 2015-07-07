@@ -164,7 +164,6 @@
       var rowIndex = 0;
       var count = 0;
       var rows = this.rows();
-      debugger;
       for(var i = index; i < rows.length; i++) {
         if(i >= 0) {
           if(rows[rowIndex][i]) {

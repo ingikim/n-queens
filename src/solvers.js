@@ -94,7 +94,6 @@ window.findAllNQueensSolutions = function(n, board, numQueensSoFar){
 }
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  debugger;
   var board = new Board({n:n});
   if(n === 2 || n === 3) {
     return board.rows();
@@ -147,7 +146,6 @@ window.countNQueensSolutions = function(n) {
   var solutions = findAllNQueensSolutions(n, new Board({n:n}), 0);
   var solutionCount = solutions.length; //fixme
 
-  debugger;
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
