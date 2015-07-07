@@ -13,6 +13,17 @@
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
+
+window.copyBoard = function(oldBoard){
+  var newRows = [];
+  var oldRows = oldBoard.rows();
+  for(var i = 0; i < oldRows.length; i++) {
+    newRows.push(oldRows[i].slice());
+  }
+  var newBoard = new Board(newRows);
+  return newBoard;
+}
+
 window.findAllNRooksSoutions = function(n, board, numRooksSoFar){
   var solutions = [];
 
@@ -37,10 +48,11 @@ window.findAllNRooksSoutions = function(n, board, numRooksSoFar){
 
 window.findNRooksSolution = function(n) {
 
+  var solutions = findAllNRooksSoutions(n, new Board({n:n}), 0);
 
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solutions[0]));
 
-  return solution;
+  return solutions[0];
 };
 
 
@@ -59,9 +71,35 @@ window.countNRooksSolutions = function(n) {
 };
 
 
+window.findAllNQueensSolutions = function(n, board, numQueensSoFar){
+  var solutions = [];
 
+  if(n === numQueensSoFar) {
+    var solution = board.rows();
+    return [solution];
+  }
+
+  var rowIndex = numQueensSoFar;
+
+  for(var i = 0; i < n; i++) {
+    var newBoard = copyBoard(board);
+    newBoard.togglePiece(rowIndex, i);
+    if(!newBoard.hasAnyQueensConflicts()) {
+      var moreSolutions = findAllNQueensSolutions(n, newBoard, numQueensSoFar + 1)
+      solutions = solutions.concat(moreSolutions);
+    }
+  }
+
+  return solutions;
+}
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
+  debugger;
+  var board = new Board({n:n});
+  if(n === 2 || n === 3) {
+    return board.rows();
+  }
+  var solutions = findAllNQueensSolutions(n, board, 0);
   // var solutionObj = new Board({n: n});
   // var solution = solutionObj.rows();
   // var columnIndexes = [];
@@ -90,98 +128,26 @@ window.findNQueensSolution = function(n) {
   // }
 
 
-  // // deep vs. shallow copy
-  // var a = [1,2,3];
-  // var b = a; // shallow copy, because a and b reference the same exact object
-  // b[0] = 10; // both a and b will have [10,2,3]
 
-  // var c = [];
-  // for (var i = 0; i < a.length; i++){
-  //   c.push(a[i]);
-  // }
-  // // deep copy
-
-
-  // var n = whatever number you want
-  // // We want findAllNRooksSolutions(n, new Board({n: n}), 0) to give us an array of solutions
-
-  // // Each solution would be an array of array
-  // [[0,1],
-  // [1,0]]
-
-  // // 
-  // solutions
-  // [
-  //   [[0,1], [1,0]], // solution 1
-  //   [[1,0], [0,1]] // solution 2
-  // ]
-
-  // var copyBoard = function(oldBoard){
-  //   var newRows = [];
-  //   var oldRows = oldBoard.rows();
-  //   // for each row in oldRow
-  //     // make a copy of that row (*hint: use splice*), and assign that row to newRows[i]
-  //   for(var i = 0; i < oldRows.length; i++) {
-  //     newRows.push(oldRows[i].slice());
-  //   }
-  //   var newBoard = new Board(newRows);
-  //   return newBoard;
-  // }
-
-  // var findAllNRooksSolutions = function(n, board, numRooksSoFar){
-  //   var solutions = [];
-
-  //   if (n === numRooksSoFar){
-  //     var solution = board.rows();
-  //     return [solution];
-  //   }
-
-  //   var rowIndex = numRooksSoFar;
-
-  //   for(var i = 0; i < n; i++) {
-  //     var newBoard = copyBoard(board);
-  //     newBoard.togglePiece(rowIndex, i);
-  //     if(!newBoard.hasAnyRooksConflicts()) {
-  //       var moreSolutions = findAllRooksSolutions(n, newBoard, numRooksSoFar + 1);
-  //       solutions = solutions.concat(moreSolutions);
-  //     }
-
-  //   }
-  //   return solutions; // [solution1, solution2, solution 3]
-  // };
-
-
-  // window.findNRooksSolution(n){
-  //   var board = new Board({n:n});
-  //   var solutions = findAllNRooksSolutions(n, board, 0);
-  // }
-
-
-  // // we want an array of all odd numbers between 2 and n
-  // n = 3
-
-  // [3]
-
-
-
-
-  // // var a = [1,2,3];
-  // // var b = [4,5,6];
-  // a.concat(b)
 
 
   
 
-  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  return solution;
+  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solutions[0]));
+  return solutions[0];
 };
 
 
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  if(n === 2 || n === 3) {
+    return 0;
+  }
+  var solutions = findAllNQueensSolutions(n, new Board({n:n}), 0);
+  var solutionCount = solutions.length; //fixme
 
+  debugger;
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
