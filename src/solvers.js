@@ -37,7 +37,7 @@ window.findAllNRooksSoutions = function(n, board, numRooksSoFar){
   for(var i = 0; i < n; i++) {
     var newBoard = copyBoard(board);
     newBoard.togglePiece(rowIndex, i);
-    if(!newBoard.hasAnyRooksConflicts()) {
+    if(!newBoard.hasAnyRookConflictOn(rowIndex, i)) {
       var moreSolutions = findAllNRooksSoutions(n, newBoard, numRooksSoFar + 1)
       solutions = solutions.concat(moreSolutions);
     }
@@ -84,7 +84,7 @@ window.findAllNQueensSolutions = function(n, board, numQueensSoFar){
   for(var i = 0; i < n; i++) {
     var newBoard = copyBoard(board);
     newBoard.togglePiece(rowIndex, i);
-    if(!newBoard.hasAnyQueensConflicts()) {
+    if(!newBoard.hasAnyQueenConflictsOn(rowIndex, i)) {
       var moreSolutions = findAllNQueensSolutions(n, newBoard, numQueensSoFar + 1)
       solutions = solutions.concat(moreSolutions);
     }
@@ -99,34 +99,6 @@ window.findNQueensSolution = function(n) {
     return board.rows();
   }
   var solutions = findAllNQueensSolutions(n, board, 0);
-  // var solutionObj = new Board({n: n});
-  // var solution = solutionObj.rows();
-  // var columnIndexes = [];
-  // for(var i = 0; i < n; i++) {
-  //   columnIndexes.push(i);
-  // }
-  // var solution = undefined; //fixme
-
-
-  // for(var r = 0; r < n; r++) {
-  //   var ci = columnIndexes[Math.round(Math.random() * (columnIndexes.length - 1))];
-  //   solution[r][ci] = 1;
-  //   if(solutionObj.hasAnyQueensConflicts()) {
-
-  //     solution[r][ci] = 0;
-  //     var copyCi = columnIndexes.slice();
-  //     var ccDelete = copyCi.indexOf(ci);
-  //     copyCi.splice(ccDelete, 1);
-
-  //     cci = copyCi[Math.round(Math.random() * (copyCi.length - 1))];
-  //     solution[r][cci] = 1;
-  //     r--;
-  //   }
-  //   var cDelete = columnIndexes.indexOf(ci);
-  //   columnIndexes.splice(cDelete, 1);
-  // }
-
-
 
 
 
